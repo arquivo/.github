@@ -1,0 +1,45 @@
+# Reusable workflow: automated versioning and GitHub Release via semantic-release.
+# Requires a .releaserc.js in the calling repo.
+# Usage in caller:
+#   jobs:
+#     release:
+#       uses: arquivo/.github/.github/workflows/semantic-release.yml@main
+#       secrets: inherit
+
+name: Semantic Release
+
+on:
+  workflow_call:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Install semantic-release
+        run: |
+          npm install --no-package-lock \
+            semantic-release \
+            @semantic-release/changelog \
+            @semantic-release/git \
+            conventional-changelog-conventionalcommits
+
+      - name: Run semantic-release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

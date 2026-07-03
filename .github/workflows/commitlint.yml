@@ -1,0 +1,46 @@
+# Reusable workflow: lint commit messages in a pull request.
+# Usage in caller:
+#   jobs:
+#     commitlint:
+#       uses: arquivo/.github/.github/workflows/commitlint.yml@main
+
+name: Lint Commit Messages
+
+on:
+  workflow_call:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 100
+
+      - name: Download commitlint config if not present
+        run: |
+          if [[ ! -f commitlint.config.mjs ]]; then
+            echo "Downloading default Arquivo commitlint config"
+            wget --no-verbose -O commitlint.config.mjs \
+              https://raw.githubusercontent.com/arquivo/.github/main/commitlint.config.mjs
+          fi
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Install commitlint
+        run: npm install --no-package-lock @commitlint/cli @commitlint/config-conventional
+
+      - name: Run commitlint
+        run: |
+          npx commitlint \
+            --from ${{ github.event.pull_request.base.sha }} \
+            --to ${{ github.event.pull_request.head.sha }} \
+            --verbose
