@@ -1,5 +1,5 @@
 # Reusable workflow: automated versioning and GitHub Release via semantic-release.
-# Requires a .releaserc.js in the calling repo.
+# A .releaserc.js in the calling repo overrides the Arquivo default.
 # Usage in caller:
 #   jobs:
 #     release:
@@ -30,6 +30,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
+
+      - name: Download default Arquivo releaserc if not present
+        run: |
+          if [[ ! -f .releaserc.js ]]; then
+            echo "Downloading default Arquivo semantic-release config"
+            wget --no-verbose -O .releaserc.js \
+              https://raw.githubusercontent.com/arquivo/.github/main/.releaserc.js
+          fi
 
       - name: Install semantic-release
         run: |
