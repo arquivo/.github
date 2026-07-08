@@ -12,7 +12,7 @@ Because many tasks span multiple repositories, we track issues centrally at [pwa
 
 ## Learn more
 
-[Overview of services and activities](https://github.com/arquivo/pwa-technologies/wiki/Arquivo.pt-in-a-nutshell:-overview-of-services-and-activities) · [All open-source projects](https://github.com/arquivo?tab=repositories) · [Technical documentation](https://github.com/arquivo/pwa-technologies/wiki) · [API](http://arquivo.pt/api) · [Search pages from the Past](http://arquivo.pt/?l=en)
+[Overview of services and activities](https://github.com/arquivo/pwa-technologies/wiki/Arquivo.pt-in-a-nutshell:-overview-of-services-and-activities) · [All open-source projects](https://github.com/orgs/arquivo/repositories) · [Technical documentation](https://github.com/arquivo/pwa-technologies/wiki) · [API](http://arquivo.pt/api) · [Search pages from the Past](http://arquivo.pt/?l=en)
 
 ## About
 
