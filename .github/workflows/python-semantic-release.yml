@@ -1,0 +1,40 @@
+# Reusable workflow: automated versioning and GitHub Release via python-semantic-release.
+# Requires [tool.semantic_release] config in the calling repo's pyproject.toml.
+# Usage in caller:
+#   jobs:
+#     release:
+#       uses: arquivo/.github/.github/workflows/python-semantic-release.yml@main
+#       secrets: inherit
+
+name: Python Semantic Release
+
+on:
+  workflow_call:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install python-semantic-release
+        run: pip install python-semantic-release
+
+      - name: Run semantic-release
+        run: semantic-release version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
