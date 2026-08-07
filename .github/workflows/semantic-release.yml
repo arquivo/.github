@@ -41,11 +41,17 @@ jobs:
 
       - name: Install semantic-release
         run: |
+          # conventional-changelog-conventionalcommits is pinned to 9.x: v10 rewrote its
+          # writer templates as plain functions (via @conventional-changelog/template),
+          # which is incompatible with the Handlebars-based template loader still used by
+          # @semantic-release/release-notes-generator's conventional-changelog-writer@8.x.
+          # Untested against that pairing, generated changelogs/release notes silently
+          # render with only the version header and no commit body content.
           npm install --no-package-lock \
             semantic-release \
             @semantic-release/changelog \
             @semantic-release/git \
-            conventional-changelog-conventionalcommits
+            conventional-changelog-conventionalcommits@9
 
       - name: Run semantic-release
         run: npx semantic-release
